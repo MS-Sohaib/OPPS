@@ -1,0 +1,91 @@
+Assignment-1 OPPs LAB:
+Constructor challenge:
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class BankAccount {
+private:
+    string accountNumber;
+    double balance;
+    string customerName;
+    string email;
+    string phoneNumber;
+
+public:
+    // Constructors
+    BankAccount() : accountNumber("000000"), balance(0.0), customerName("Unknown"), email("N/A"), phoneNumber("N/A") {}
+    BankAccount(string accNum, double bal, string name, string mail, string phone) : accountNumber(accNum), balance(bal), customerName(name), email(mail), phoneNumber(phone) {}
+
+    // Getters and Setters
+    string getAccountNumber() const { return accountNumber; }
+    void setAccountNumber(const string& accNum) { accountNumber = accNum; }
+
+    double getBalance() const { return balance; }
+    void setBalance(double bal) { balance = bal; }
+
+    string getCustomerName() const { return customerName; }
+    void setCustomerName(const string& name) { customerName = name; }
+
+    string getEmail() const { return email; }
+    void setEmail(const string& mail) { email = mail; }
+
+    string getPhoneNumber() const { return phoneNumber; }
+    void setPhoneNumber(const string& phone) { phoneNumber = phone; }
+
+    // Additional methods
+    void depositFunds(double amount) {
+        balance += amount;
+        cout << "Deposited " << amount << " into account. New balance: " << balance << endl;
+    }
+
+    void withdrawFunds(double amount) {
+        if (balance >= amount) {
+            balance -= amount;
+            cout << "Withdrawn " << amount << " from account. New balance: " << balance << endl;
+        } else {
+            cout << "Insufficient funds to withdraw " << amount << endl;
+        }
+    }
+};
+
+class VipCustomer {
+private:
+    string name;
+    double creditLimit;
+    string emailAddress;
+
+public:
+    // Constructors
+    VipCustomer() : name("Unknown"), creditLimit(0.0), emailAddress("N/A") {}
+    VipCustomer(string n, double limit) : name(n), creditLimit(limit), emailAddress("N/A") {}
+    VipCustomer(string n, double limit, string email) : name(n), creditLimit(limit), emailAddress(email) {}
+
+    // Getters
+    string getName() const { return name; }
+    double getCreditLimit() const { return creditLimit; }
+    string getEmailAddress() const { return emailAddress; }
+};
+
+int main() {
+    // Testing BankAccount class
+    BankAccount account1;
+    account1.setCustomerName("Mr Umer");
+    account1.setAccountNumber("123456789");
+    account1.depositFunds(1000);
+    account1.withdrawFunds(500);
+    account1.withdrawFunds(700);
+
+    // Testing VipCustomer class
+    VipCustomer customer1;
+    cout << "Name: " << customer1.getName() << ", Credit Limit: " << customer1.getCreditLimit() << ", Email: " << customer1.getEmailAddress() << endl;
+
+    VipCustomer customer2("Ahmed", 5000);
+    cout << "Name: " << customer2.getName() << ", Credit Limit: " << customer2.getCreditLimit() << ", Email: " << customer2.getEmailAddress() << endl;
+
+    VipCustomer customer3("Ali", 10000, "Ali@example.com");
+    cout << "Name: " << customer3.getName() << ", Credit Limit: " << customer3.getCreditLimit() << ", Email: " << customer3.getEmailAddress() << endl;
+
+    return 0;
+}

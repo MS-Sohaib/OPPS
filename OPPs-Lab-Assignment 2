@@ -1,0 +1,78 @@
+Assignment 2
+Inheritance challenge:
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+// Base class: Vehicle
+class Vehicle {
+public:
+    // Constructor
+    Vehicle() : speed(0), direction("straight"), gear(0) {}
+
+    // Method to change gears
+    void changeGear(int newGear) {
+        gear = newGear;
+        cout << "Gear changed to: " << gear << endl;
+    }
+
+    // Method to change direction
+    void changeDirection(string newDirection) {
+        direction = newDirection;
+        cout << "Vehicle steering direction changed to: " << direction << endl;
+    }
+
+    // Method to move
+    void move(int newSpeed) {
+        speed = newSpeed;
+        cout << "Vehicle moving at speed: " << speed << " km/h" << endl;
+    }
+
+protected:
+    int speed;
+    string direction;
+    int gear;
+};
+
+// Derived class: Car
+class Car : public Vehicle {
+public:
+    // Method for steering
+    void steer(string newDirection) {
+        changeDirection(newDirection);
+    }
+};
+
+// Derived class: SpecificCar (Specific type of car)
+class SpecificCar : public Car {
+public:
+    // Method specific to this type of car
+    void specificFeature() {
+        cout << "This specific car has a music player." << endl;
+    }
+};
+
+int main() {
+    SpecificCar myCar;
+    int gear;
+    string steering;
+    int speed;
+
+    cout << "Enter gear (1-6): ";
+    cin >> gear;
+    myCar.changeGear(gear);
+
+    cout << "Enter steering direction (L for left, R for right): ";
+    cin >> steering;
+    myCar.steer(steering);
+
+    cout << "Enter speed (0-100 km/h): ";
+    cin >> speed;
+    myCar.move(speed);
+
+    myCar.specificFeature();
+
+    return 0;
+}
+

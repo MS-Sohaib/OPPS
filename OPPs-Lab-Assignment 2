@@ -75,4 +75,262 @@ int main() {
 
     return 0;
 }
+3.	Encapsulation challenge:
+Code:
+#include <iostream>
+
+using namespace std;
+
+class Printer {
+private:
+    int tonerLevel;
+    int numPagesPrinted;
+    bool isDuplexPrinter;
+
+public:
+    // Constructor
+    Printer(bool duplexPrinter = false) : tonerLevel(0), numPagesPrinted(0), isDuplexPrinter(duplexPrinter) {}
+
+    // Method to fill up toner
+    void fillToner(int amount) {
+        tonerLevel = min(100, tonerLevel + amount);
+    }
+
+    // Method to simulate printing a page
+    void printPage() {
+        if (tonerLevel > 0) {
+            ++numPagesPrinted;
+            tonerLevel -= 5; // Assuming each page reduces toner by 5%
+        } else {
+            cout << "Toner is empty. Please fill it up." << endl;
+        }
+    }
+
+    // Method to print on both sides of the paper
+    void printDoubleSided() {
+        if (isDuplexPrinter) {
+            printPage();
+            printPage(); // Simulating printing on both sides
+        } else {
+            cout << "This printer is not capable of double-sided printing." << endl;
+        }
+    }
+
+    // Getter methods
+    int getTonerLevel() const {
+        return tonerLevel;
+    }
+
+    int getNumPagesPrinted() const {
+        return numPagesPrinted;
+    }
+
+    bool isPrinterDuplex() const {
+        return isDuplexPrinter;
+    }
+};
+
+int main() {
+    Printer myPrinter(true); // Creating a duplex printer
+
+    myPrinter.fillToner(50); // Fill up the toner to 50%
+    cout << "Toner Level: " << myPrinter.getTonerLevel() << endl;
+
+    myPrinter.printDoubleSided(); // Print on both sides
+    cout << "Number of Pages Printed: " << myPrinter.getNumPagesPrinted() << endl;
+
+    return 0;
+}
+4.	Polymorphism challenge:
+Code:
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Car {
+protected:
+    int cylinders;
+    string name;
+    int wheels;
+    bool engine;
+
+public:
+    Car(int cyl, string n) : cylinders(cyl), name(n), wheels(4), engine(true) {}
+
+    int getCylinders() const {
+        return cylinders;
+    }
+
+    string getName() const {
+        return name;
+    }
+
+    void startEngine() const {
+        cout << "Starting the engine of " << name << endl;
+    }
+
+    virtual void accelerate() const {
+        cout << "Accelerating " << name << endl;
+    }
+
+    virtual void brake() const {
+        cout << "Braking " << name << endl;
+    }
+};
+
+class SportsCar : public Car {
+public:
+    SportsCar(string n) : Car(8, n) {}
+
+    void accelerate() const override {
+        cout << "Accelerating " << name << " with a roar!" << endl;
+    }
+
+    void brake() const override {
+        cout << "Braking " << name << " with precision!" << endl;
+    }
+};
+
+class SUV : public Car {
+public:
+    SUV(string n) : Car(6, n) {}
+
+    void accelerate() const override {
+        cout << "Accelerating " << name << " smoothly." << endl;
+    }
+
+    void brake() const override {
+        cout << "Braking " << name << " gently." << endl;
+    }
+};
+
+class Truck : public Car {
+public:
+    Truck(string n) : Car(12, n) {}
+
+    void accelerate() const override {
+        cout << "Accelerating " << name << " with power!" << endl;
+    }
+
+    void brake() const override {
+        cout << "Braking " << name << " with force." << endl;
+    }
+};
+
+int main() {
+    SportsCar sportsCar("Ferrari");
+    SUV suv("Toyota");
+    Truck truck("Volvo");
+
+    sportsCar.startEngine();
+    sportsCar.accelerate();
+    sportsCar.brake();
+
+    suv.startEngine();
+    suv.accelerate();
+    suv.brake();
+
+    truck.startEngine();
+    truck.accelerate();
+    truck.brake();
+
+    return 0;
+}
+5.	Object Oriented Programming Master Challenge:
+Code:
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+class Hamburger {
+protected:
+    string rollType;
+    string meat;
+    double basePrice;
+    vector<pair<string, double>> additions;
+
+public:
+    Hamburger(string rollType, string meat, double basePrice)
+        : rollType(rollType), meat(meat), basePrice(basePrice) {}
+
+    void addAddition(string name, double price) {
+        if (additions.size() < 4) {
+            additions.push_back(make_pair(name, price));
+        } else {
+            cout << "Maximum additions reached!" << endl;
+        }
+    }
+
+    virtual double calculateTotalPrice() {
+        double totalPrice = basePrice;
+        for (auto addition : additions) {
+            totalPrice += addition.second;
+        }
+        return totalPrice;
+    }
+
+    void showOrder() {
+        cout << "Base burger price: $" << basePrice << endl;
+        for (auto addition : additions) {
+            cout << "Added " << addition.first << " for $" << addition.second << endl;
+        }
+        cout << "Total price: $" << calculateTotalPrice() << endl;
+    }
+};
+
+class HealthyBurger : public Hamburger {
+public:
+    HealthyBurger(string meat, double basePrice)
+        : Hamburger("Brown Rye Bread Roll", meat, basePrice) {}
+
+    void addHealthyAddition(string name, double price) {
+        if (additions.size() < 6) {
+            additions.push_back(make_pair(name, price));
+        } else {
+            cout << "Maximum additions reached!" << endl;
+        }
+    }
+};
+
+class DeluxeBurger : public Hamburger {
+public:
+    DeluxeBurger(string meat, double basePrice)
+        : Hamburger("White Bread Roll", meat, basePrice) {
+        addDeluxeAdditions();
+    }
+
+    void addDeluxeAdditions() {
+        additions.push_back(make_pair("Chips", 2.5));
+        additions.push_back(make_pair("Drink", 1.5));
+    }
+
+    void addAddition(string name, double price) {
+        cout << "Sorry, no custom additions allowed for Deluxe Burger." << endl;
+    }
+};
+
+int main() {
+    Hamburger basicBurger("White Bread Roll", "Beef", 3.0);
+    basicBurger.addAddition("Lettuce", 0.5);
+    basicBurger.addAddition("Tomato", 0.7);
+    basicBurger.showOrder();
+
+    cout << "----------------------------------" << endl;
+
+    HealthyBurger healthyBurger("Turkey", 4.0);
+    healthyBurger.addAddition("Lettuce", 0.5);
+    healthyBurger.addHealthyAddition("Avocado", 1.0);
+    healthyBurger.addHealthyAddition("Sprouts", 0.8);
+    healthyBurger.showOrder();
+
+    cout << "----------------------------------" << endl;
+
+    DeluxeBurger deluxeBurger("Beef", 5.5);
+    deluxeBurger.showOrder();
+
+    return 0;
+}
 
